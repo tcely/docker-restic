@@ -38,9 +38,6 @@ RUN apk --update upgrade && \
     rm -rf /root/.gnupg && \
     apk del .build-depends && rm -rf /var/cache/apk/*
 
-# I wqnted to use this, but discovered tofu is disabled on alpine
-#    gpg2 --no-options --trust-model tofu+pgp --tofu-default-policy=unknown --keyid-format 0xlong --auto-key-retrieve --verbose --verify-files *.asc && \
-
 WORKDIR "${GOPATH:-/go}/src/github.com/restic"
 
 RUN cd restic && go run build.go && sha256sum restic && ./restic version
@@ -51,8 +48,6 @@ MAINTAINER tcely <tcely@users.noreply.github.com>
 
 ENV GOPATH="${GOPATH:-/go}"
 
-# Disabled this copy since the binaries are identical.
-#COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/restic-git
 COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic-*/restic /usr/bin/restic
 
 RUN apk --update upgrade && \
