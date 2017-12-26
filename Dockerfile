@@ -20,7 +20,7 @@ RUN apk --update upgrade && \
         "${GOPATH}/src/github.com/restic/restic" && \
     (cd "${GOPATH}/src/github.com/restic/restic" && git tag -v "$RESTIC_TAG" && git checkout "$RESTIC_TAG") && \
     rm -rf /root/.gnupg && \
-    apk del .build-depends && rm -rf /var/cache/apk/*
+    apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
 WORKDIR "${GOPATH:-/go}/src/github.com/restic/restic"
 
