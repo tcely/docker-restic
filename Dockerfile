@@ -6,7 +6,7 @@ ADD SigningKeys .
 ENV GOPATH="${GOPATH:-/go}"
 
 # v0.8.0 is currently the latest
-ENV RESTIC_TAG v0.8.0
+ARG RESTIC_TAG
 
 RUN apk --update upgrade && \
     apk add ca-certificates && \
