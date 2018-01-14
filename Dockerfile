@@ -37,3 +37,4 @@ RUN apk --update upgrade && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/usr/bin/restic"]
+CMD ["--help"]
