@@ -1,12 +1,11 @@
-FROM golang:alpine AS builder
-MAINTAINER tcely <tcely@users.noreply.github.com>
 
-ADD SigningKeys .
+FROM golang:alpine AS builder
+
+COPY SigningKeys SigningKeys
+
+ARG RESTIC_TAG
 
 ENV GOPATH="${GOPATH:-/go}"
-
-# v0.8.0 is currently the latest
-ARG RESTIC_TAG
 
 RUN apk --update upgrade && \
     apk add ca-certificates && \
@@ -27,7 +26,7 @@ WORKDIR "${GOPATH:-/go}/src/github.com/restic/restic"
 RUN go run build.go && sha256sum restic && ./restic version
 
 FROM alpine
-MAINTAINER tcely <tcely@users.noreply.github.com>
+LABEL maintainer="https://keybase.io/tcely"
 
 ENV GOPATH="${GOPATH:-/go}"
 
