@@ -9,13 +9,15 @@ ENV GOPATH="${GOPATH:-/go}"
 RUN apk --update upgrade && \
     apk add ca-certificates && \
     apk add --virtual .build-depends \
-      git gnupg && \
+      curl git gnupg jq && \
     mkdir -v -m 0700 -p /root/.gnupg && \
-    gpg2 --no-options --verbose --keyid-format 0xlong --import SigningKeys && rm -f SigningKeys && \
+    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
+        --import SigningKeys && rm -f SigningKeys && \
     mkdir -v -m 0755 -p "${GOPATH}/src/github.com/restic" && \
     git clone --no-checkout --dissociate --reference-if-able /restic.git \
         'https://github.com/restic/restic.git' \
         "${GOPATH}/src/github.com/restic/restic" && \
+    [ -n "$RESTIC_TAG" ] || { curl -sSL 'https://api.github.com/repos/restic/restic/releases/latest' | jq -r '[.["tag_name"],.["prerelease"]]|select(.[1] == false)|"RESTIC_TAG="+.[0]' > /tmp/latest-restic-tag.sh && . /tmp/latest-restic-tag.sh; } && \
     (cd "${GOPATH}/src/github.com/restic/restic" && git tag -v "$RESTIC_TAG" && git checkout "$RESTIC_TAG") && \
     rm -rf /root/.gnupg && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
