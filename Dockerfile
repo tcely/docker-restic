@@ -20,7 +20,7 @@ RUN apk --update upgrade && \
     [ -n "$RESTIC_TAG" ] || { curl -sSL 'https://api.github.com/repos/restic/restic/releases/latest' | jq -r '[.["tag_name"],.["prerelease"]]|select(.[1] == false)|"RESTIC_TAG="+.[0]' > /tmp/latest-restic-tag.sh && . /tmp/latest-restic-tag.sh; } && \
     (cd "${GOPATH}/src/github.com/restic/restic" && git tag -v "$RESTIC_TAG" && git checkout "$RESTIC_TAG") && \
     rm -rf /root/.gnupg && \
-    : apk del --purge .build-depends && rm -rf /var/cache/apk/*
+    apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
 WORKDIR "${GOPATH:-/go}/src/github.com/restic/restic"
 
