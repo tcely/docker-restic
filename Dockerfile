@@ -1,4 +1,4 @@
-ARG RESTIC_TAG=v0.10.0
+ARG RESTIC_TAG=v0.11.0
 
 FROM golang:alpine3.13 AS builder
 
