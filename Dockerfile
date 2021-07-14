@@ -35,6 +35,8 @@ WORKDIR "${GOPATH:-/go}/src/github.com/restic/restic"
 
 RUN go run build.go && sha256sum restic && ./restic version
 
+FROM restic/rest-server AS server
+
 FROM alpine:3.13
 LABEL maintainer="https://keybase.io/tcely"
 
@@ -42,6 +44,8 @@ ENV GOPATH="${GOPATH:-/go}"
 
 COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/restic
 COPY --from=builder /usr/local/ /usr/local/
+
+COPY --from=server /usr/bin/rest-server /usr/bin/rest-server
 
 RUN apk --update upgrade && \
     apk add bash ca-certificates fuse git gnupg openssh-client tree util-linux && \
