@@ -5,7 +5,7 @@ COPY SigningKeys.pass SigningKeys.pass
 #ADD https://www.zx2c4.com/keys/AB9942E6D4A4CFC3412620A749FC7012A5DE03AE.asc SigningKeys.pass
 
 ARG RESTIC_TAG
-ARG PASS_TAG="1.7.3"
+ARG PASS_TAG="1.7.4"
 
 ENV GOPATH="${GOPATH:-/go}"
 
