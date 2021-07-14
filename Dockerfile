@@ -1,3 +1,5 @@
+ARG RESTIC_TAG=v0.9.6
+
 FROM golang:alpine3.13 AS builder
 
 COPY SigningKeys SigningKeys
