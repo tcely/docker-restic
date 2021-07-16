@@ -43,7 +43,10 @@ LABEL maintainer="https://keybase.io/tcely"
 ENV GOPATH="${GOPATH:-/go}"
 
 COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/restic
-COPY --from=builder /usr/local/ /usr/local/
+# avoid /usr/local/go to reduce image size
+COPY --from=builder /usr/local/bin /usr/local/
+COPY --from=builder /usr/local/lib /usr/local/
+COPY --from=builder /usr/local/share /usr/local/
 
 COPY --from=server /usr/bin/rest-server /usr/bin/rest-server
 
