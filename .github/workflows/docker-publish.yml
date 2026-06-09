@@ -15,6 +15,12 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+    inputs:
+      restic_tag:
+        type: string
+        default: ''
+        required: false
+        description: 'The RESTIC_TAG build argument (defaults to "")'
 
 jobs:
   build:
@@ -83,3 +89,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            RESTIC_TAG=${{ inputs.restic_tag }}
