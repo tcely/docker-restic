@@ -1,4 +1,5 @@
 ARG ALPINE_VERSION="3.23"
+ARG GOPATH="/go"
 
 FROM golang:alpine${ALPINE_VERSION} AS builder
 
@@ -9,7 +10,8 @@ COPY SigningKeys.pass SigningKeys.pass
 ARG RESTIC_TAG
 ARG PASS_TAG="1.7.4"
 
-ENV GOPATH="${GOPATH:-/go}"
+ARG GOPATH
+ENV GOPATH="${GOPATH}"
 
 RUN apk --update upgrade && \
     apk add bash ca-certificates git gnupg tree util-linux && \
@@ -41,7 +43,8 @@ FROM restic/rest-server AS server
 
 FROM alpine:${ALPINE_VERSION}
 
-ENV GOPATH="${GOPATH:-/go}"
+ARG GOPATH
+ENV GOPATH="${GOPATH}"
 
 COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/restic
 # avoid /usr/local/go to reduce image size
