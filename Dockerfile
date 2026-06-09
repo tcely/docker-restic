@@ -1,4 +1,4 @@
-FROM golang:alpine3.13 AS builder
+FROM golang:alpine3.23 AS builder
 
 COPY SigningKeys SigningKeys
 COPY SigningKeys.pass SigningKeys.pass
@@ -37,8 +37,7 @@ RUN go run build.go && sha256sum restic && ./restic version
 
 FROM restic/rest-server AS server
 
-FROM alpine:3.13
-LABEL maintainer="https://keybase.io/tcely"
+FROM alpine:3.23
 
 ENV GOPATH="${GOPATH:-/go}"
 
