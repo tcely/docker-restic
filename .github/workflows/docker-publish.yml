@@ -20,7 +20,10 @@ jobs:
   build:
 
     environment: ${{ matrix.environment }}
-    concurrency: ci-${{ github.ref }}
+    concurrency:
+      cancel-in-progress: false
+      group: ci-${{ matrix.environment }}-${{ github.ref }}
+      queue: max
     runs-on: ubuntu-latest
     permissions:
       contents: read
