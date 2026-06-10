@@ -1,5 +1,6 @@
 ARG ALPINE_VERSION="3.23"
 ARG GOPATH="/go"
+ARG RESTIC_TAG="v0.16.2"
 
 FROM golang:alpine${ALPINE_VERSION} AS builder
 
