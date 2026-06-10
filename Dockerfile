@@ -46,13 +46,13 @@ FROM alpine:${ALPINE_VERSION}
 ARG GOPATH
 ENV GOPATH="${GOPATH}"
 
-COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/restic
+COPY --from=builder "${GOPATH:-/go}"/src/github.com/restic/restic/restic /usr/bin/
 # avoid /usr/local/go to reduce image size
-COPY --from=builder /usr/local/bin /usr/local/
-COPY --from=builder /usr/local/lib /usr/local/
-COPY --from=builder /usr/local/share /usr/local/
+COPY --from=builder /usr/local/bin /usr/local/bin/
+COPY --from=builder /usr/local/lib /usr/local/lib/
+COPY --from=builder /usr/local/share /usr/local/share/
 
-COPY --from=server /usr/bin/rest-server /usr/bin/rest-server
+COPY --from=server /usr/bin/rest-server /usr/bin/
 
 RUN apk --update upgrade && \
     apk add bash ca-certificates fuse git gnupg openssh-client tree util-linux && \
